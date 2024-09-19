@@ -56,10 +56,10 @@ _2Tuple: TypeAlias = tuple[_T1, _T1]
 _NBit1 = TypeVar("_NBit1", bound=NBitBase)
 _NBit2 = TypeVar("_NBit2", bound=NBitBase)
 
-_IntType = TypeVar("_IntType", bound=integer)
-_FloatType = TypeVar("_FloatType", bound=floating)
-_NumberType = TypeVar("_NumberType", bound=number)
-_NumberType_co = TypeVar("_NumberType_co", covariant=True, bound=number)
+_IntType = TypeVar("_IntType", bound=integer[Any])
+_FloatType = TypeVar("_FloatType", bound=floating[Any])
+_NumberType = TypeVar("_NumberType", bound=number[Any])
+_NumberType_co = TypeVar("_NumberType_co", covariant=True, bound=number[Any])
 _GenericType_co = TypeVar("_GenericType_co", covariant=True, bound=generic)
 
 class _BoolOp(Protocol[_GenericType_co]):
@@ -297,27 +297,6 @@ class _FloatDivMod(Protocol[_NBit1]):
     def __call__(
         self, other: integer[_NBit2] | floating[_NBit2], /
     ) -> _2Tuple[floating[_NBit1]] | _2Tuple[floating[_NBit2]]: ...
-
-class _ComplexOp(Protocol[_NBit1]):
-    @overload
-    def __call__(self, other: bool, /) -> complexfloating[_NBit1, _NBit1]: ...
-    @overload
-    def __call__(
-        self, other: int, /
-    ) -> complexfloating[_NBit1, _NBit1] | complexfloating[_NBitInt, _NBitInt]: ...
-    @overload
-    def __call__(
-        self, other: complex, /,
-    ) -> complexfloating[_NBit1, _NBit1] | complex128: ...
-    @overload
-    def __call__(
-        self,
-        other: (
-            integer[_NBit2]
-            | floating[_NBit2]
-            | complexfloating[_NBit2, _NBit2]
-        ), /,
-    ) -> complexfloating[_NBit1, _NBit1] | complexfloating[_NBit2, _NBit2]: ...
 
 class _NumberOp(Protocol):
     def __call__(self, other: _NumberLike_co, /) -> Any: ...
