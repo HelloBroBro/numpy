@@ -4,12 +4,14 @@ from typing import (
     Literal as L,
     Any,
     ParamSpec,
+    TypeAlias,
     TypeVar,
     overload,
     Protocol,
     SupportsIndex,
     SupportsInt,
-    TypeGuard
+    TypeGuard,
+    type_check_only
 )
 
 from numpy import (
@@ -58,13 +60,15 @@ _Pss = ParamSpec("_Pss")
 _SCT = TypeVar("_SCT", bound=generic)
 _ArrayType = TypeVar("_ArrayType", bound=NDArray[Any])
 
-_2Tuple = tuple[_T, _T]
+_2Tuple: TypeAlias = tuple[_T, _T]
 
+@type_check_only
 class _TrimZerosSequence(Protocol[_T_co]):
     def __len__(self) -> int: ...
     def __getitem__(self, key: slice, /) -> _T_co: ...
     def __iter__(self) -> Iterator[Any]: ...
 
+@type_check_only
 class _SupportsWriteFlush(Protocol):
     def write(self, s: str, /) -> object: ...
     def flush(self) -> object: ...

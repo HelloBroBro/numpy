@@ -3,11 +3,13 @@ from collections.abc import Sequence, Iterable
 from types import EllipsisType
 from typing import (
     Any,
+    TypeAlias,
     TypeVar,
     overload,
     Protocol,
     SupportsIndex,
-    Literal
+    Literal,
+    type_check_only
 )
 
 from numpy import (
@@ -35,8 +37,9 @@ from numpy._typing import (
 
 _SCT = TypeVar("_SCT", bound=generic)
 
-_RecArray = recarray[Any, dtype[_SCT]]
+_RecArray: TypeAlias = recarray[Any, dtype[_SCT]]
 
+@type_check_only
 class _SupportsReadInto(Protocol):
     def seek(self, offset: int, whence: int, /) -> object: ...
     def tell(self, /) -> int: ...
